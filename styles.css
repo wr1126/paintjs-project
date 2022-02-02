@@ -1,0 +1,38 @@
+html{ font-size: 10px; }
+body{ margin: 0; padding: 0; overflow: hidden; }
+li{ list-style: none; }
+
+.palette{
+    float: left;
+    width: 25%; height: 100vh;
+    padding: 2rem 0 2rem 2rem; box-sizing: border-box;
+}
+.sketch{ float: left; width: 50%; height: 100vh; }
+canvas{ width: 100%; height: 80vh; }
+.toolbox{
+    display: table; 
+    width: 100%; height: 20vh; text-align: center; 
+}
+.toolbox > .btn_wrap{
+    display: table-cell; vertical-align: middle;
+    width: 100%; height: 6rem; 
+}
+.toolbox > .btn_wrap > input{
+    all: unset; margin: 0 2rem 2rem 0;
+    width: 15rem; height: 6rem; border-radius: 3rem;
+    font-size: 2rem;  text-align: center; cursor: pointer;
+    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+.gallery{
+    float: right;
+    background-color: cornflowerblue;
+    width: 25%; height: 100vh;
+}
+#color-palette{ margin: 0; padding: 0; }
+#color-palette > li{
+    float: left; 
+    background-color: white;
+    margin: 0 0 1rem 1rem;
+    width: 7rem; height: 7rem; border-radius: 1rem;
+    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08); 
+}
