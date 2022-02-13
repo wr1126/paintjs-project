@@ -8,6 +8,7 @@ const PaintBtn = document.getElementById("Paint");
 const eraseBtn = document.getElementById("Erase");
 const saveBtn = document.getElementById("Save");
 const shareBtn = document.getElementById("Share");
+const range = document.getElementById("range");
 
 canvas.width = width;
 canvas.height = height;
@@ -31,8 +32,10 @@ function appendList(event){
         ul.append(li);        
         let random = "#" + Math.floor(Math.random() * 16777215).toString(16); 
         li.style.backgroundColor = random;
-        li.classList.add("colors");
     }
+
+    const colors = document.getElementsByTagName("li"); 
+    Array.from(colors).forEach(color => color.addEventListener("click", colorClick));
 }
 
 function fill(event){
@@ -75,10 +78,10 @@ function mouseMove(event){
     const x = event.offsetX;
     const y = event.offsetY;
 
-    if(!painting){ //마우스가 클릭되고 떼어진 상태
+    if(!painting){ 
         ctx.beginPath();
         ctx.moveTo(x, y);
-    }else{ //마우스가 클릭되어진 상태, 페인트 모드
+    }else{ 
         ctx.lineTo(x, y);
         ctx.stroke();
     }
@@ -88,7 +91,12 @@ function mouseMove(event){
 ////////////////////////////////////////
 
 function colorClick(event){
-    alert("booyah");
+    ctx.strokeStyle = event.target.style.backgroundColor;
+    ctx.fillStyle = event.target.style.backgroundColor;
+}
+
+function brushWidth(event){
+    ctx.lineWidth = event.target.value;
 }
 
 ////////////////////////////////////////
@@ -101,13 +109,8 @@ if(canvas){
     canvas.addEventListener("mouseleave", stopPainting); //마우스가 캔버스 떠날 시
     canvas.addEventListener("click", canvasClick);
 }
-const colors = document.querySelectorAll(".colors");
-Array.from(colors).forEach(function(color){
-    color.addEventListener("click", colorClick);
-});
 
-/* Array.from(colors).forEach(color => color.addEventListener("click", colorClick)); */
-
+range.addEventListener("input", brushWidth);
 PaintBtn.addEventListener("click", fill);
 eraseBtn.addEventListener("click", erase);
 window.addEventListener("resize", appendList);
