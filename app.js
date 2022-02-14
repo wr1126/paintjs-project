@@ -1,14 +1,16 @@
 const canvas = document.querySelector("canvas");
-const {width, height} = canvas.getBoundingClientRect(); //viewport를 위치로 한 위치값 가져오는 매서드
+const ctx = canvas.getContext("2d");
+const {width, height} = canvas.getBoundingClientRect();
 const palette = document.querySelector('.palette');
 const paletteWidthSize = palette.clientWidth;
 const paletteHeightSize = palette.clientHeight;
-const ctx = canvas.getContext("2d");
-const PaintBtn = document.getElementById("Paint");
+const range = document.getElementById("range");
+
+const paintBtn = document.getElementById("Paint");
 const eraseBtn = document.getElementById("Erase");
 const saveBtn = document.getElementById("Save");
 const shareBtn = document.getElementById("Share");
-const range = document.getElementById("range");
+const deleteBtn = document.getElementById("Delete");
 
 canvas.width = width;
 canvas.height = height;
@@ -21,6 +23,7 @@ ctx.lineWidth = 2.5;
 let painting = false;
 let filling = false;
 let erasing = false;
+
 
 function appendList(event){
     const listWidthCount = Math.floor(paletteWidthSize / 70);
@@ -41,21 +44,20 @@ function appendList(event){
 function fill(event){
     if(filling){
         filling = false; 
-        PaintBtn.innerText = "Paint";
+        paintBtn.innerText = "Paint";
     }else{
         filling = true;
-        PaintBtn.innerText = "Fill";
+        paintBtn.innerText = "Fill";
     }
 }
 
-function erase(event){
-    if(erasing){
-        erasing = false;
-        eraseBtn.innerText = "Erase";
-    }else{
-        erasing = true;
-        eraseBtn.innerText = "Delete";
-    }
+function erase(){ //paint 모드에서는 정상 작동하나 fill 모드에서는 작동 X
+    ctx.strokeStyle = "white";
+}
+
+function deletePainting(event){
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 0, width, height);
 }
 ////////////////////////////////////////
 ////////////////////////////////////////
@@ -99,6 +101,19 @@ function brushWidth(event){
     ctx.lineWidth = event.target.value;
 }
 
+function savePainting(){
+    const file = canvas.toDataURL();
+    const link = document.createElement("a");
+    link.href = file;
+    link.download = "My Painting 🎨";
+    link.click();
+}
+
+function sharePainting(){
+ 
+/*     prompt("하단의 URL을 복사하세요.", canvas.toDataURL()); */
+console.dir(canvas);
+}
 ////////////////////////////////////////
 ////////////////////////////////////////
 ////////////////////////////////////////
@@ -109,9 +124,12 @@ if(canvas){
     canvas.addEventListener("mouseleave", stopPainting); //마우스가 캔버스 떠날 시
     canvas.addEventListener("click", canvasClick);
 }
-
-range.addEventListener("input", brushWidth);
-PaintBtn.addEventListener("click", fill);
-eraseBtn.addEventListener("click", erase);
 window.addEventListener("resize", appendList);
+range.addEventListener("input", brushWidth);
+paintBtn.addEventListener("click", fill);
+eraseBtn.addEventListener("click", erase);
+saveBtn.addEventListener("click", savePainting);
+shareBtn.addEventListener("click", sharePainting);
+deleteBtn.addEventListener("click", deletePainting);
+
 appendList();
