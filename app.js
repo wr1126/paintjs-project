@@ -4,12 +4,15 @@ const {width, height} = canvas.getBoundingClientRect();
 const palette = document.querySelector('.palette');
 const paletteWidthSize = palette.clientWidth;
 const paletteHeightSize = palette.clientHeight;
+const gallery = document.querySelector(".gallery");
+const galleryWidthSize = gallery.clientWidth;
+const galleryHeightSize = gallery.clientHeight;
 const range = document.getElementById("range");
 
 const paintBtn = document.getElementById("Paint");
 const eraseBtn = document.getElementById("Erase");
 const saveBtn = document.getElementById("Save");
-const shareBtn = document.getElementById("Share");
+const displayBtn = document.getElementById("Display");
 const deleteBtn = document.getElementById("Delete");
 
 canvas.width = width;
@@ -23,6 +26,7 @@ ctx.lineWidth = 2.5;
 let painting = false;
 let filling = false;
 let erasing = false;
+let galleryList = [];
 
 
 function appendList(event){
@@ -51,17 +55,59 @@ function fill(event){
     }
 }
 
-function erase(){ //paint 모드에서는 정상 작동하나 fill 모드에서는 작동 X
+function erase(event){
     ctx.strokeStyle = "white";
+    filling = false;
+    startPainting();
+    painting = false;
+}
+
+function save(){
+    const file = canvas.toDataURL();
+    const link = document.createElement("a");
+    link.href = file;
+    link.download = "My Painting 🎨";
+    link.click();
 }
 
 function deletePainting(event){
     ctx.fillStyle = "white";
     ctx.fillRect(0, 0, width, height);
 }
+
 ////////////////////////////////////////
 ////////////////////////////////////////
 ////////////////////////////////////////
+
+function saveImgList(){
+    localStorage.setItem("images", JSON.stringify(galleryList));
+}
+
+function display(imgList){
+    const frame = document.createElement("img");
+    frame.src = img;
+    frame.width = Math.floor(galleryWidthSize / 3.5);
+    frame.height = Math.floor(galleryHeightSize / 7);
+    gallery.appendChild(frame);
+}
+
+function handleDisplay(event){
+    event.preventDefault();
+    const img = canvas.toDataURL();
+    const imgList = {
+        text: img,
+        id: Date.now(),
+    }
+    galleryList.push(imgList);
+    console.log(galleryList);
+    display(imgList);
+    saveImgList();
+}
+
+////////////////////////////////////////
+////////////////////////////////////////
+////////////////////////////////////////
+
 function canvasClick(event){
     if(filling){
         ctx.fillRect(0, 0, width, height);
@@ -87,10 +133,8 @@ function mouseMove(event){
         ctx.lineTo(x, y);
         ctx.stroke();
     }
+
 }
-////////////////////////////////////////
-////////////////////////////////////////
-////////////////////////////////////////
 
 function colorClick(event){
     ctx.strokeStyle = event.target.style.backgroundColor;
@@ -101,35 +145,26 @@ function brushWidth(event){
     ctx.lineWidth = event.target.value;
 }
 
-function savePainting(){
-    const file = canvas.toDataURL();
-    const link = document.createElement("a");
-    link.href = file;
-    link.download = "My Painting 🎨";
-    link.click();
-}
-
-function sharePainting(){
- 
-/*     prompt("하단의 URL을 복사하세요.", canvas.toDataURL()); */
-console.dir(canvas);
-}
-////////////////////////////////////////
-////////////////////////////////////////
-////////////////////////////////////////
 if(canvas){
-    canvas.addEventListener("mousemove", mouseMove); //마우스 움직일 시
-    canvas.addEventListener("mousedown", startPainting); //마우스 클릭하고 있는 상태
-    canvas.addEventListener("mouseup", stopPainting);    //마우스 클릭 중단 시
-    canvas.addEventListener("mouseleave", stopPainting); //마우스가 캔버스 떠날 시
+    canvas.addEventListener("mousemove", mouseMove); 
+    canvas.addEventListener("mousedown", startPainting); 
+    canvas.addEventListener("mouseup", stopPainting);    
+    canvas.addEventListener("mouseleave", stopPainting);
     canvas.addEventListener("click", canvasClick);
 }
+
 window.addEventListener("resize", appendList);
 range.addEventListener("input", brushWidth);
 paintBtn.addEventListener("click", fill);
 eraseBtn.addEventListener("click", erase);
-saveBtn.addEventListener("click", savePainting);
-shareBtn.addEventListener("click", sharePainting);
+saveBtn.addEventListener("click", save);
+displayBtn.addEventListener("click", handleDisplay);
 deleteBtn.addEventListener("click", deletePainting);
 
 appendList();
+/* const savedList = localStorage.getItem(galleryList);
+if(savedList){
+    const parsedList = JSON.parse(savedList);
+    galleryList = parsedList;
+    parsedList.forEach(display);
+} */

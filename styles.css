@@ -43,8 +43,15 @@ canvas{ width: 100%; height: 80vh; }
 }
 .gallery{
     float: right;
-    background-color: cornflowerblue;
+    background-color:rgb(247, 247, 247);
     width: 25%; height: 100vh;
+    padding: 2rem 0 2rem 0; box-sizing: border-box;
+    overflow: scroll;
+}
+img{
+    border-radius: 10%;
+    margin: 0 0 1rem 2rem;
+    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08); 
 }
 #color-palette{ margin: 0; padding: 0; }
 #color-palette > li{
