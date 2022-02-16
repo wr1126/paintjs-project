@@ -80,30 +80,61 @@ function deletePainting(event){
 ////////////////////////////////////////
 
 function saveImgList(){
-    localStorage.setItem("images", JSON.stringify(galleryList));
+    localStorage.setItem("galleryList", JSON.stringify(galleryList));
+}
+
+function deleteImg(event){
+    const div = event.target.parentElement;
+    galleryList = galleryList.filter((galleryList) => galleryList.id !== parseInt(div.id));
+    div.remove();
+
+    saveImgList();
 }
 
 function display(imgList){
+    const imgGroup = document.createElement("div");
+    imgGroup.classList.add("imgGroup");
     const frame = document.createElement("img");
-    frame.src = img;
+    frame.src = imgList.text;
     frame.width = Math.floor(galleryWidthSize / 3.5);
     frame.height = Math.floor(galleryHeightSize / 7);
-    gallery.appendChild(frame);
+    const x = document.createElement("span");
+    x.innerText = "❌";
+    x.addEventListener("click", deleteImg);
+
+
+    imgGroup.appendChild(frame);
+    imgGroup.appendChild(x);
+    gallery.appendChild(imgGroup);
 }
 
 function handleDisplay(event){
-    event.preventDefault();
-    const img = canvas.toDataURL();
     const imgList = {
-        text: img,
+        text: canvas.toDataURL(),
         id: Date.now(),
     }
     galleryList.push(imgList);
-    console.log(galleryList);
     display(imgList);
     saveImgList();
 }
 
+function modal(event){
+    const body = document.querySelector("body");
+    const background = document.createElement("div");
+    const myPainting = document.createElement("img");
+
+    background.classList.add("background");
+    myPainting.classList.add("modal");
+    imgUrl = event.target.currentSrc;
+    myPainting.src = imgUrl;
+    body.appendChild(background);
+    body.appendChild(myPainting);
+
+    background.addEventListener("click", function(event){
+        background.style.display = "none";
+        myPainting.style.display = "none";
+    });
+}
 ////////////////////////////////////////
 ////////////////////////////////////////
 ////////////////////////////////////////
@@ -133,7 +164,6 @@ function mouseMove(event){
         ctx.lineTo(x, y);
         ctx.stroke();
     }
-
 }
 
 function colorClick(event){
@@ -162,9 +192,15 @@ displayBtn.addEventListener("click", handleDisplay);
 deleteBtn.addEventListener("click", deletePainting);
 
 appendList();
-/* const savedList = localStorage.getItem(galleryList);
-if(savedList){
+
+const savedList = localStorage.getItem("galleryList");
+if(savedList){ //만약 저장된 데이터가 없는 상태라면, 클릭했을 때 디스플레이 되는 함수까지 그 코드 안에서 직접 실행해야 하지만, 기존 리스트가 있는 경우 다시 리스트를 만드는 짓은 하지 않고, 실제 배열로 parse 해둔 리스트를 빈 리스트 배열 galleryList에 옮겨서 데이터를 유지시켜줌. 그러고 나서 각 요소에 display를 시켜주면 됨!
     const parsedList = JSON.parse(savedList);
     galleryList = parsedList;
     parsedList.forEach(display);
-} */
+}
+
+const zoom = document.querySelectorAll("img");
+zoom.forEach(function(zoom){
+    zoom.addEventListener("click", modal); 
+});

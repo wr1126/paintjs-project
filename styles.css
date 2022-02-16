@@ -45,12 +45,18 @@ canvas{ width: 100%; height: 80vh; }
     float: right;
     background-color:rgb(247, 247, 247);
     width: 25%; height: 100vh;
-    padding: 2rem 0 2rem 0; box-sizing: border-box;
+    padding: 2rem; box-sizing: border-box;
     overflow: scroll;
 }
+.imgGroup{ position: relative; display: inline; }
+.imgGroup:hover span{ opacity: 1; transition: 0.5s; }
+span{ 
+    cursor: pointer; position: relative; top: -15rem; left: -5rem; 
+    opacity: 0;
+}
 img{
-    border-radius: 10%;
-    margin: 0 0 1rem 2rem;
+    border-radius: 10%; cursor: pointer;
+    margin: 0 2rem 2rem 0;
     box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08); 
 }
 #color-palette{ margin: 0; padding: 0; }
@@ -60,4 +66,15 @@ img{
     margin: 0 0 1rem 1rem;
     width: 7rem; height: 7rem; border-radius: 1rem;
     box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08); 
+}
+.background{
+    position: absolute; width: 100%; height: 100%; 
+    background-color: rgba(0, 0, 0, 0.801);
+}
+.modal{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40%; height: 60%;
 }
