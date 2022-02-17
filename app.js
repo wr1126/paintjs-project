@@ -4,7 +4,7 @@ const {width, height} = canvas.getBoundingClientRect();
 const palette = document.querySelector('.palette');
 const paletteWidthSize = palette.clientWidth;
 const paletteHeightSize = palette.clientHeight;
-const gallery = document.querySelector(".gallery");
+const gallery = document.querySelector(".gallery_group");
 const galleryWidthSize = gallery.clientWidth;
 const galleryHeightSize = gallery.clientHeight;
 const range = document.getElementById("range");
@@ -27,6 +27,7 @@ let painting = false;
 let filling = false;
 let erasing = false;
 let galleryList = [];
+
 
 
 function appendList(event){
@@ -75,33 +76,30 @@ function deletePainting(event){
     ctx.fillRect(0, 0, width, height);
 }
 
-////////////////////////////////////////
-////////////////////////////////////////
-////////////////////////////////////////
-
 function saveImgList(){
     localStorage.setItem("galleryList", JSON.stringify(galleryList));
 }
 
 function deleteImg(event){
     const div = event.target.parentElement;
-    galleryList = galleryList.filter((galleryList) => galleryList.id !== parseInt(div.id));
+    galleryList = galleryList.filter((element) => element.id !== parseInt(div.id));
     div.remove();
-
     saveImgList();
 }
 
 function display(imgList){
     const imgGroup = document.createElement("div");
+    imgGroup.id = imgList.id;
     imgGroup.classList.add("imgGroup");
+
     const frame = document.createElement("img");
     frame.src = imgList.text;
     frame.width = Math.floor(galleryWidthSize / 3.5);
     frame.height = Math.floor(galleryHeightSize / 7);
+
     const x = document.createElement("span");
     x.innerText = "❌";
     x.addEventListener("click", deleteImg);
-
 
     imgGroup.appendChild(frame);
     imgGroup.appendChild(x);
@@ -135,9 +133,6 @@ function modal(event){
         myPainting.style.display = "none";
     });
 }
-////////////////////////////////////////
-////////////////////////////////////////
-////////////////////////////////////////
 
 function canvasClick(event){
     if(filling){
@@ -175,6 +170,8 @@ function brushWidth(event){
     ctx.lineWidth = event.target.value;
 }
 
+
+
 if(canvas){
     canvas.addEventListener("mousemove", mouseMove); 
     canvas.addEventListener("mousedown", startPainting); 
@@ -194,7 +191,7 @@ deleteBtn.addEventListener("click", deletePainting);
 appendList();
 
 const savedList = localStorage.getItem("galleryList");
-if(savedList){ //만약 저장된 데이터가 없는 상태라면, 클릭했을 때 디스플레이 되는 함수까지 그 코드 안에서 직접 실행해야 하지만, 기존 리스트가 있는 경우 다시 리스트를 만드는 짓은 하지 않고, 실제 배열로 parse 해둔 리스트를 빈 리스트 배열 galleryList에 옮겨서 데이터를 유지시켜줌. 그러고 나서 각 요소에 display를 시켜주면 됨!
+if(savedList){
     const parsedList = JSON.parse(savedList);
     galleryList = parsedList;
     parsedList.forEach(display);

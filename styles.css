@@ -2,21 +2,12 @@ html{ font-size: 10px; }
 body{ margin: 0; padding: 0; overflow: hidden; }
 li{ list-style: none; }
 
-.palette{
-    float: left;
-    width: 25%; height: 100vh; overflow: hidden; 
-    padding: 2rem 0 2rem 2rem; box-sizing: border-box;
-}
+.palette{ float: left; width: 25%; height: 100vh; overflow: hidden; padding: 2rem 0 2rem 2rem; box-sizing: border-box; }
 .sketch{ float: left; width: 50%; height: 100vh; }
 canvas{ width: 100%; height: 80vh; }
-.toolbox{
-    display: table; 
-    width: 100%; height: 20vh; text-align: center; 
-}
-.toolbox > .range_wrap{
-    width: 100%; height: 30%; 
-    padding: 2rem 0; box-sizing: border-box;
-}
+.toolbox{ display: table; width: 100%; height: 20vh; text-align: center; }
+.toolbox > .range_wrap{ width: 100%; height: 30%; padding: 2rem 0; box-sizing: border-box; }
+
 #range{
     -webkit-appearance: none;
     width: 20rem; height: 2rem; line-height: 50%; 
@@ -30,51 +21,24 @@ canvas{ width: 100%; height: 80vh; }
     background-color: black;
     cursor: pointer;
 }
-.toolbox > .btn_wrap{
-    display: table-cell; vertical-align: middle;
-    width: 100%; height: 70%;
-    float: left;
-}
+.toolbox > .btn_wrap{ display: table-cell; vertical-align: middle; width: 100%; height: 70%; float: left; }
 .toolbox > .btn_wrap > button{
     all: unset; margin: 0 2rem 2rem 0;
     width: 15rem; height: 6rem; border-radius: 3rem;
     font-size: 2rem; text-align: center; cursor: pointer;
     box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
 }
-.gallery{
-    float: right;
-    background-color:rgb(247, 247, 247);
-    width: 25%; height: 100vh;
-    padding: 2rem; box-sizing: border-box;
-    overflow: scroll;
-}
-.imgGroup{ position: relative; display: inline; }
+.gallery{ float: right; background-color:rgb(247, 247, 247); width: 25%; height: 100vh; overflow: auto; overflow-x: hidden; }
+.gallery_group{ width: 100%; height: 100%; margin: 2rem; z-index: -1; }
+.imgGroup{ position: relative; display: inline-block; }
 .imgGroup:hover span{ opacity: 1; transition: 0.5s; }
-span{ 
-    cursor: pointer; position: relative; top: -15rem; left: -5rem; 
-    opacity: 0;
-}
-img{
-    border-radius: 10%; cursor: pointer;
-    margin: 0 2rem 2rem 0;
-    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08); 
-}
+span{ cursor: pointer; opacity: 0; position: absolute; top: 0; right: 0.5rem; }
+img{ border-radius: 10%; cursor: pointer; margin: 0 2rem 2rem 0; box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);  }
 #color-palette{ margin: 0; padding: 0; }
 #color-palette > li{
-    float: left; cursor: pointer;
-    background-color: white;
-    margin: 0 0 1rem 1rem;
+    float: left; cursor: pointer; background-color: white; margin: 0 0 1rem 1rem;
     width: 7rem; height: 7rem; border-radius: 1rem;
     box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08); 
 }
-.background{
-    position: absolute; width: 100%; height: 100%; 
-    background-color: rgba(0, 0, 0, 0.801);
-}
-.modal{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 40%; height: 60%;
-}
+.background{ position: absolute; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.801); }
+.modal{ position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40%; height: 60%; }
